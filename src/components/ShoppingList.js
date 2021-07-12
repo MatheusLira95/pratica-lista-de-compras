@@ -3,39 +3,28 @@ import styled from "styled-components";
 import InsertForm from "./InsertForm";
 import axios from "axios";
 
-
 export default function ShoppingList() {
-  // Fake data
-  const [items, setItems] = useState([
-    { id: 1, text: "Pão" },
-    { id: 2, text: "Salsicha" },
-    { id: 3, text: "Ketchup" },
-  ]);
-
+  const [items, setItems] = useState([]);
   useEffect(loadItems, []);
 
   function loadItems() {
+    const request = axios.get("http://localhost:4000/list");
 
-  const request = axios.get("http://localhost:4000/list");  
-  
-  request.then((res)=>{
-    setItems(res.data);
+    request.then((res) => {
+      setItems(res.data);
     });
 
-  request.catch(()=>{
-    alert('Erro inesperado ocorreu')
-    })
-
-}
-
-  
+    request.catch(() => {
+      alert("Erro inesperado ocorreu");
+    });
+  }
 
   return (
     <>
       <InsertForm onAddItem={loadItems} />
       <List>
         {items.map((item) => (
-          <li key={item.id}>{item.text}</li>
+          <li key={item.id}>{item.item}</li>
         ))}
       </List>
     </>
